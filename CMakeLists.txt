@@ -54,7 +54,7 @@ add_custom_target(dotnet_build ALL
 )
 
 add_test(
-  NAME DotNet_NativeLibUse_ProjectWorks 
+  NAME ffi_dotnet_nativelibuse_projectworks 
   COMMAND ${DOTNET_EXE} run --no-build
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/ffi/dotnet/NativeLibUse
   )
@@ -68,14 +68,19 @@ add_custom_target(rust_build ALL
   COMMENT "Building rust solution under dev configuration"
 )
 add_test(
-  NAME rust_ffi_prime
+  NAME ffi_rust_prime
   COMMAND ${CMAKE_SOURCE_DIR}/ffi/rust/target/debug/my-project.exe
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/$<CONFIG>
 )
 
+find_package (Python COMPONENTS Interpreter REQUIRED)
 set(Python_Dir ${CMAKE_SOURCE_DIR}/ffi/python)
 add_custom_target(create_python_script ALL
   DEPENDS soltys_math_lib ${Python_Dir}/CreateIsPrimeScript.cmake
   COMMAND ${CMAKE_COMMAND} -D Python_Dir=${Python_Dir} -D Target_File=$<TARGET_FILE:soltys_math_lib> -P ${Python_Dir}/CreateIsPrimeScript.cmake
   COMMENT "Creating Python script for testing FFI"
+)
+add_test(
+  NAME ffi_python_prime
+  COMMAND ${Python_EXECUTABLE} ${Python_Dir}/is_prime.py
 )
