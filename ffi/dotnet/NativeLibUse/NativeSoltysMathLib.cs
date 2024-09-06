@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace csharp_vs_cpp;
+namespace NativeLibUse;
 
 public class NativeSoltysMathLib
 {

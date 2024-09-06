@@ -8,7 +8,6 @@ project(
     LANGUAGES CXX
 )
 
-
 add_library(soltys_math_lib SHARED lib/math.cpp lib/include/soltysmath/math.hpp)
 target_include_directories(soltys_math_lib PRIVATE lib/include)
 target_compile_definitions(soltys_math_lib PRIVATE SOLTYS_EXPORT)
@@ -45,13 +44,31 @@ target_include_directories(soltys_math_test PRIVATE lib/include)
 include(Catch)
 catch_discover_tests(soltys_math_test)
 
+#Building dotnet solution
+find_program(DOTNET_EXE dotnet REQUIRED)
+add_custom_target(dotnet_build ALL
+  DEPENDS soltys_math_lib
+  COMMAND ${DOTNET_EXE} build -c $<CONFIG> --property:SoltysMathLibPath=$<TARGET_FILE:soltys_math_lib>
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/ffi/dotnet
+  COMMENT "Building dotnet solution under $<CONFIG> configuration"
+)
 
-# add_custom_target(dotnet_build
-# DEPENDS soltys_math_lib
-# COMMAND dotnet build -c Release
-# WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/dotnet/csharp_vs_cpp)
+add_test(
+  NAME DotNet_NativeLibUse_ProjectWorks 
+  COMMAND ${DOTNET_EXE} run --no-build
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/ffi/dotnet/NativeLibUse
+  )
+find_program(CARGO_EXE cargo REQUIRED)
 
-# add_custom_command(TARGET dotnet_build PRE_BUILD        
-#     COMMAND ${CMAKE_COMMAND} -E copy_if_different  
-#         "${CMAKE_BINARY_DIR}/$<CONFIG>/soltys_math_lib.dll"      
-#         ${CMAKE_SOURCE_DIR}/dotnet/csharp_vs_cpp/bin/Release/net8.0) 
+add_custom_target(rust_build ALL
+  DEPENDS soltys_math_lib ${CMAKE_SOURCE_DIR}/ffi/rust/CreateBuildRs.cmake
+  COMMAND ${CMAKE_COMMAND} -D Target_File=$<TARGET_FILE:soltys_math_lib> -D Rust_Dir=${CMAKE_SOURCE_DIR}/ffi/rust -P ${CMAKE_SOURCE_DIR}/ffi/rust/CreateBuildRs.cmake
+  COMMAND ${CARGO_EXE} build 
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/ffi/rust
+  COMMENT "Building rust solution under dev configuration"
+)
+add_test(
+  NAME rust_ffi_prime
+  COMMAND ${CMAKE_SOURCE_DIR}/ffi/rust/target/debug/my-project.exe
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/$<CONFIG>
+)

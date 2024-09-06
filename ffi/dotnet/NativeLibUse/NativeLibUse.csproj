@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)..\..\build\$(Configuration)\soltys_math_lib.dll">
+    <None Include="$(SoltysMathLibPath)">
       <Link>soltys_math_lib.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>True</Visible>
