@@ -1,0 +1,1 @@
+configure_file(${Python_Dir}/is_prime.py.in ${Python_Dir}/is_prime.py)

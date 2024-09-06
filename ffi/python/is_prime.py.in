@@ -1,0 +1,5 @@
+from ctypes import *
+
+a = CDLL("@Target_File@")
+print(a.sm_is_prime(21))
+print(a.sm_is_prime(37))

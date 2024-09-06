@@ -72,3 +72,10 @@ add_test(
   COMMAND ${CMAKE_SOURCE_DIR}/ffi/rust/target/debug/my-project.exe
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/$<CONFIG>
 )
+
+set(Python_Dir ${CMAKE_SOURCE_DIR}/ffi/python)
+add_custom_target(create_python_script ALL
+  DEPENDS soltys_math_lib ${Python_Dir}/CreateIsPrimeScript.cmake
+  COMMAND ${CMAKE_COMMAND} -D Python_Dir=${Python_Dir} -D Target_File=$<TARGET_FILE:soltys_math_lib> -P ${Python_Dir}/CreateIsPrimeScript.cmake
+  COMMENT "Creating Python script for testing FFI"
+)
