@@ -1,22 +1,23 @@
+#define SOLTYS_EXPORT
 #include <soltysmath/math.hpp>
 
-SOLTYS_DLL int sm_addition(int a, int b)
+int sm_addition(int a, int b)
 {
     return a + b;
 }
-SOLTYS_DLL int sm_subtraction(int a, int b)
+int sm_subtraction(int a, int b)
 {
     return a - b;
 }
-SOLTYS_DLL int sm_multiplication(int a, int b)
+int sm_multiplication(int a, int b)
 {
     return a * b;
 }
-SOLTYS_DLL int sm_division(int a, int b)
+int sm_division(int a, int b)
 {
     return a / b;
 }
-SOLTYS_DLL int sm_is_prime(int64_t n)
+int sm_is_prime(int64_t n)
 {
     if (n < 2)
     {

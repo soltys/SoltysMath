@@ -8,9 +8,11 @@ project(
     LANGUAGES CXX
 )
 
-add_library(soltys_math_lib SHARED lib/math.cpp lib/include/soltysmath/math.hpp)
+add_library(soltys_math_lib
+ SHARED 
+ lib/math.cpp 
+ lib/include/soltysmath/math.hpp)
 target_include_directories(soltys_math_lib PRIVATE lib/include)
-target_compile_definitions(soltys_math_lib PRIVATE SOLTYS_EXPORT)
 
 add_executable(soltys_math_cli cli/main.cpp)
 target_link_libraries(soltys_math_cli PRIVATE soltys_math_lib)
@@ -52,14 +54,13 @@ add_custom_target(dotnet_build ALL
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/ffi/dotnet
   COMMENT "Building dotnet solution under $<CONFIG> configuration"
 )
-
 add_test(
   NAME ffi_dotnet_nativelibuse_projectworks 
   COMMAND ${DOTNET_EXE} run --no-build
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/ffi/dotnet/NativeLibUse
   )
-find_program(CARGO_EXE cargo REQUIRED)
 
+find_program(CARGO_EXE cargo REQUIRED)
 add_custom_target(rust_build ALL
   DEPENDS soltys_math_lib ${CMAKE_SOURCE_DIR}/ffi/rust/CreateBuildRs.cmake
   COMMAND ${CMAKE_COMMAND} -D Target_File=$<TARGET_FILE:soltys_math_lib> -D Rust_Dir=${CMAKE_SOURCE_DIR}/ffi/rust -P ${CMAKE_SOURCE_DIR}/ffi/rust/CreateBuildRs.cmake

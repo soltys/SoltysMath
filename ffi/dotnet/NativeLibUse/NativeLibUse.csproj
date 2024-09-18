@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="$(SoltysMathLibPath)">
       <Link>soltys_math_lib.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -2,9 +2,9 @@
 #include <stdint.h>
 
 #ifdef SOLTYS_EXPORT
-#define SOLTYS_DLL extern "C" __declspec(dllexport)
+#define SOLTYS_DLL __declspec(dllexport)
 #else
-#define SOLTYS_DLL extern "C" __declspec(dllimport)
+#define SOLTYS_DLL __declspec(dllimport)
 #endif
 extern "C"
 {
